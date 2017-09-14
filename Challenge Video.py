@@ -26,7 +26,6 @@ high_threshold = 180
 
 
 # Define the Hough transform parameters
-# Make a blank the same size as our image to draw on
 rho = 1
 theta = np.pi/180
 threshold = 1
@@ -41,7 +40,8 @@ while(cap.isOpened()):
 
     #make a copy of original frame
     original = copy.copy(frame)
-
+    
+    #avoid crashing the code for imputs of other types
     if str(type(frame)) == "<type 'numpy.ndarray'>":
 
         #gray
