@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import copy
 
+#python 2.7
+
 # import video file
 cap = cv2.VideoCapture('challenge.mp4')
 ret, frame = cap.read()
@@ -59,20 +61,20 @@ while(cap.isOpened()):
         mask = np.zeros(frame.shape, dtype=np.uint8)
         roi_corners = np.array([[(xsize*0.2, ysize*0.9), (xsize*0.4, ysize*0.7),(xsize*0.8, ysize*0.70), (xsize*0.85, ysize*0.9)]], dtype=np.int32)
         # fill the ROI so it doesn't get wiped out when the mask is applied
-        #channel_count = frame.shape[2] # i.e. 3 or 4 depending on your image
+        #channel_count = frame.shape[2] # i.e. 3 or 4 depending on the number of channels in the image
         ignore_mask_color = (255)
         cv2.fillPoly(mask, roi_corners, ignore_mask_color)
-        # from Masterfool: use cv2.fillConvexPoly if you know it's convex
 
         # apply the mask
         masked_image = cv2.bitwise_and(frame, mask)
 
-        #
+        # canny edge detection
         edges = cv2.Canny(masked_image, low_threshold, high_threshold)
 
-        # Run Hough on edge detected image
+
         line_image = np.copy(original) * 0 # creating a blank to draw lines on
 
+        # Run Hough on edge detected image
         lines = cv2.HoughLinesP(edges, rho, theta, threshold, np.array([255,0,0]),
         min_line_length, max_line_gap)
 
